@@ -12,30 +12,40 @@ Currently supporting getting jazz concerts from Songkick in Berlin.
 ```elixir
 iex> Gigex.get() |> Enum.take(5)
 [
-  %{
-    name: "Led Zeppelin",
-    date: "2022-12-10",
-    location: "SO36"
-  },
-  %{
-    name: "The Cure",
-    date: "2022-12-09",
-    location: "Metropol"
-  },
-  %{
-    name: "The all seeing I",
-    date: "2022-12-12",
-    location: "Earthsea"
-  },
-  %{
-    name: "Kokoroko",
-    date: "2022-12-14",
-    location: "Tangeri"
-  },
-  %{
-    name: "Dave Brubeck",
-    date: "2022-12-15",
-    location: "Blue Note"
-  }
+   %{
+     name: "Led Zeppelin",
+     date: "2022-12-10",
+     dotw: "Thursday",
+     location: "SO36",
+     datasource: "lido"
+   },
+   %{
+     name: "The Cure",
+     date: "2022-12-09",
+     dotw: "Friday",
+     location: "Metropol",
+     datasource: "songkick"
+   },
+   %{
+     name: "The all seeing I",
+     date: "2022-12-12",
+     dotw: "Sunday",
+     location: "Earthsea",
+     datasource: "lido"
+   },
+   %{
+     name: "Kokoroko",
+     date: "2022-12-14",
+     dotw: "Wednesday",
+     location: "Tangeri",
+     datasource: "songkick"
+   },
+   %{
+     name: "Dave Brubeck",
+     date: "2022-12-15,
+     dotw: "Saturday",
+     location: "Blue Note"
+     datasource: "songkick"
+   }
 ]
 ```
