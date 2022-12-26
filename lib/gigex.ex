@@ -3,95 +3,54 @@ defmodule Gigex do
   Gigex 🎸
 
   A scraper for gigs.
-
-  ## Example
-
-      iex> Gigex.get()
-      [
-        %{
-          name: "The Cure",
-          date: "2022-12-09",
-          location: "Metropol"
-        },
-        %{
-          name: "Led Zeppelin",
-          date: "2022-12-10",
-          location: "SO36"
-        }
-      ]
   """
 
-  @spec get(url :: String.t()) :: concerts :: list()
   @doc """
-  Get the latest jazz gigs from Songkick in Berlin
+  Get the latest gigs from Songkick in Berlin
 
   ## Example
 
-      iex> Gigex.get() |> Enum.take(5)
+      iex> Gigex.gigs() |> Enum.take(5)
       [
         %{
           name: "Led Zeppelin",
           date: "2022-12-10",
-          location: "SO36"
+          dotw: "Thursday",
+          location: "SO36",
+          datasource: "lido"
         },
         %{
           name: "The Cure",
           date: "2022-12-09",
-          location: "Metropol"
+          dotw: "Friday",
+          location: "Metropol",
+          datasource: "songkick"
         },
         %{
           name: "The all seeing I",
           date: "2022-12-12",
-          location: "Earthsea"
+          dotw: "Sunday",
+          location: "Earthsea",
+          datasource: "lido"
         },
         %{
           name: "Kokoroko",
           date: "2022-12-14",
-          location: "Tangeri"
+          dotw: "Wednesday",
+          location: "Tangeri",
+          datasource: "songkick"
         },
         %{
           name: "Dave Brubeck",
           date: "2022-12-15,
+          dotw: "Saturday",
           location: "Blue Note"
+          datasource: "songkick"
         }
       ]
   """
-  def get(url \\ "https://www.songkick.com/metro-areas/28443-germany-berlin/genre/jazz") do
-    html =
-      HTTPoison.get!(url,
-        user_agent: "Gigex (Windows x64)",
-        timeout: 10_000
-      ).body
-
-    html
-    |> Floki.parse_document!()
-    |> Floki.find(".event-listings-element")
-    |> Enum.map(fn event ->
-      %{
-        name: extract_name(event),
-        date: extract_date_from_event(event),
-        location: extract_location(event)
-      }
-    end)
-  end
-
-  defp extract_date_from_event(event) do
-    event
-    |> Floki.attribute("title")
-    |> Floki.text()
-  end
-
-  defp extract_location(event) do
-    event
-    |> Floki.find(".location")
-    |> Floki.text()
-    |> String.trim()
-    |> String.replace(~r/[\n|\s]+/, " ")
-  end
-
-  defp extract_name(event) do
-    event
-    |> Floki.find(".artists")
-    |> Floki.text()
+  @spec gigs(site :: :all | :songkick | :lido) :: concerts :: list()
+  def gigs(site \\ :all) do
+    Gigex.Scraper.run_for(site)
   end
 end
