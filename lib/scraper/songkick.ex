@@ -13,11 +13,13 @@ defmodule Gigex.Scraper.Songkick do
   @songkick_berlin_url "#{@songkick}/metro-areas/28443-germany-berlin/"
   @default_entries_limit 10
 
+  alias Gigex.Scraper.HTTP
+
   def get(opts \\ []) do
     limit = Keyword.get(opts, :limit, @default_entries_limit)
 
     @songkick_berlin_url
-    |> http_get()
+    |> HTTP.get()
     |> Floki.parse_document!()
     |> Floki.find(".event-listings-element")
     |> Enum.reduce_while(
@@ -97,24 +99,12 @@ defmodule Gigex.Scraper.Songkick do
   defp extract_event_infos(event) do
     event_link = extract_event_link(event)
 
-    # NOTE: Find out how to not hit too hard the website ;)
-    # Cache?
-    # For the moment `http_get/1` has a :timer.sleep of 200ms
     event_link
-    |> http_get()
+    |> HTTP.get()
     |> Floki.parse_document!()
     |> Floki.find(".additional-details-container")
     |> Floki.text()
     # Trim surrounding blank space, `\n`, `\t`, etc.
     |> String.trim()
-  end
-
-  def http_get(url) do
-    :timer.sleep(200)
-
-    HTTPoison.get!(url,
-      user_agent: "Gigex (Windows x64)",
-      timeout: 10_000
-    ).body
   end
 end
