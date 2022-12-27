@@ -42,7 +42,7 @@ iex> Gigex.get() |> Enum.take(5)
    },
    %{
      name: "Dave Brubeck",
-     date: "2022-12-15,
+     date: "2022-12-15",
      dotw: "Saturday",
      location: "Blue Note"
      datasource: "songkick"

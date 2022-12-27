@@ -42,15 +42,16 @@ defmodule Gigex do
         },
         %{
           name: "Dave Brubeck",
-          date: "2022-12-15,
+          date: "2022-12-15",
           dotw: "Saturday",
           location: "Blue Note"
           datasource: "songkick"
         }
       ]
   """
-  @spec gigs(site :: :all | :songkick | :lido) :: concerts :: list()
-  def gigs(site \\ :all) do
-    Gigex.Scraper.run_for(site)
+  @spec gigs(opts :: list()) :: concerts :: list()
+  def gigs(opts \\ []) do
+    {site, _} = Keyword.pop(opts, :site, :all)
+    Gigex.Scraper.run_for(site, opts)
   end
 end
