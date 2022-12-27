@@ -7,6 +7,7 @@ defmodule Gigex.Scraper.Lido do
   Website url: https://www.lido-berlin.de
   """
 
+  @default_entries_limit 10
   @lido_url "https://www.lido-berlin.de"
   @location_name "Lido"
 
@@ -19,15 +20,27 @@ defmodule Gigex.Scraper.Lido do
     "Sa" => "Saturday",
     "Su" => "Sunday"
   }
-  @default_entries_limit 10
 
+  alias Gigex.Cache
   alias Gigex.Scraper.HTTP
 
   def get(opts \\ []) do
+    case Cache.get(@lido_url) do
+      nil ->
+        @lido_url
+        |> HTTP.get()
+        |> gigs(opts)
+        |> then(&Cache.put(@lido_url, &1))
+
+      content ->
+        content
+    end
+  end
+
+  defp gigs(content, opts) do
     limit = Keyword.get(opts, :limit, @default_entries_limit)
 
-    @lido_url
-    |> HTTP.get()
+    content
     |> Floki.parse_document!()
     |> Floki.find(".event-ticket")
     |> Enum.reduce_while(

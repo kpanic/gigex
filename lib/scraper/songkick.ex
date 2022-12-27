@@ -9,17 +9,30 @@ defmodule Gigex.Scraper.Songkick do
   You could have a flood of events on the terminal.
   """
 
+  @default_entries_limit 10
   @songkick "https://www.songkick.com"
   @songkick_berlin_url "#{@songkick}/metro-areas/28443-germany-berlin/"
-  @default_entries_limit 10
 
+  alias Gigex.Cache
   alias Gigex.Scraper.HTTP
 
   def get(opts \\ []) do
+    case Cache.get(@songkick_berlin_url) do
+      nil ->
+        @songkick_berlin_url
+        |> HTTP.get()
+        |> gigs(opts)
+        |> then(&Cache.put(@songkick_berlin_url, &1))
+
+      content ->
+        content
+    end
+  end
+
+  defp gigs(content, opts) do
     limit = Keyword.get(opts, :limit, @default_entries_limit)
 
-    @songkick_berlin_url
-    |> HTTP.get()
+    content
     |> Floki.parse_document!()
     |> Floki.find(".event-listings-element")
     |> Enum.reduce_while(
@@ -43,8 +56,6 @@ defmodule Gigex.Scraper.Songkick do
       end
     )
   end
-
-  # normalize()?
 
   defp extract_date_from_event(event) do
     datetime =
