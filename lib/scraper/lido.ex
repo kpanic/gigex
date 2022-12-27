@@ -108,15 +108,18 @@ defmodule Gigex.Scraper.Lido do
   defp extract_event_infos(event) do
     event_link = extract_event_link(event)
 
-    event_link
-    |> HTTP.get()
-    |> Floki.parse_document!()
-    |> Floki.find(".price")
-    |> Enum.map(fn info ->
-      Floki.text(info)
-    end)
-    |> Enum.join(", ")
-    |> String.trim()
+    event_infos =
+      event_link
+      |> HTTP.get()
+      |> Floki.parse_document!()
+      |> Floki.find(".price")
+      |> Enum.map(fn info ->
+        Floki.text(info)
+      end)
+      |> Enum.join(", ")
+      |> String.trim()
+
+    "#{event_infos}, Doors open: #{extract_entrance_hour(event)}"
   end
 
   # It returns the first entrance hour of the list, when the doors of the place
@@ -125,11 +128,11 @@ defmodule Gigex.Scraper.Lido do
   # of the event.
   # We ignore it for now since it's rare to have doors open not matching with
   # the start of the event.
-  # defp extract_entrance_hour(event) do
-  #   event
-  #   |> Floki.children()
-  #   |> Floki.find(".event-ticket__meta__times__time__value")
-  #   |> hd()
-  #   |> Floki.text()
-  # end
+  defp extract_entrance_hour(event) do
+    event
+    |> Floki.children()
+    |> Floki.find(".event-ticket__meta__times__time__value")
+    |> hd()
+    |> Floki.text()
+  end
 end
