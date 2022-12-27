@@ -11,8 +11,9 @@ defmodule Gigex.Scraper do
     # Get all the gigs from the scrapers and sort them by date so that they
     # appear like one stream of data.
 
-    Enum.sort_by(
-      Scraper.Songkick.get(opts) ++ Scraper.Lido.get(opts),
+    opts
+    |> get_gigs_concurrently()
+    |> Enum.sort_by(
       &Date.from_iso8601!(&1.date),
       Date
     )
@@ -20,4 +21,20 @@ defmodule Gigex.Scraper do
 
   def run_for(:songkick, opts), do: Scraper.Songkick.get(opts)
   def run_for(:lido, opts), do: Scraper.Lido.get(opts)
+
+  defp get_gigs_concurrently(opts) do
+    scrapers = [&Scraper.Songkick.get/1, &Scraper.Lido.get/1]
+
+    scrapers
+    |> Task.async_stream(
+      fn scraper ->
+        scraper.(opts)
+      end,
+      timeout: :timer.minutes(1)
+    )
+    |> Stream.flat_map(fn {:ok, result} ->
+      result
+    end)
+    |> Enum.to_list()
+  end
 end
