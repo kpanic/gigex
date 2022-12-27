@@ -18,6 +18,7 @@ defmodule Gigex do
           dotw: "Thursday",
           link: "https://www.lido-berlin.de/events/2022-12-10-led-zeppelin---so36",
           location: "SO36",
+          infos: "15.00 € Abendkasse, 13.00 € Vorverkauf+ Geb , 11.00 € Early Bird+ Geb",
           datasource: "lido"
         },
         %{
@@ -25,6 +26,7 @@ defmodule Gigex do
           date: "2022-12-09",
           dotw: "Friday",
           link: "https://www.lido-berlin.de/events/2022-12-09-the-cure---metropol",
+          infos: "15.00 € Abendkasse, 9.00 € Vorverkauf+ Geb , 7.00 € Early Bird+ Geb"
           location: "Metropol",
           datasource: "songkick"
         },
@@ -34,6 +36,7 @@ defmodule Gigex do
           dotw: "Sunday",
           link: "https://www.lido-berlin.de/events/2022-12-12-the-all-seeing-i---earthsea",
           location: "Earthsea",
+          infos: "",
           datasource: "lido"
         },
         %{
@@ -42,6 +45,7 @@ defmodule Gigex do
           dotw: "Wednesday",
           link: "https://www.lido-berlin.de/events/2022-12-14-kokokoko---tangeri",
           location: "Tangeri",
+          infos: "Price: €51.00 – €72.00\n      Doors open: 20:00",
           datasource: "songkick"
         },
         %{
@@ -50,6 +54,7 @@ defmodule Gigex do
           dotw: "Saturday",
           link: "https://www.lido-berlin.de/events/2022-12-15-dave-brubeck---blue-note",
           location: "Blue Note"
+          infos: "Price: €25.00 – €32.50\n      Doors open: 20:00",
           datasource: "songkick"
         }
       ]

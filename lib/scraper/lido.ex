@@ -24,11 +24,7 @@ defmodule Gigex.Scraper.Lido do
   def get(opts \\ []) do
     limit = Keyword.get(opts, :limit, @default_entries_limit)
 
-    html =
-      HTTPoison.get!(@lido_url,
-        user_agent: "Gigex (Windows x64)",
-        timeout: 10_000
-      ).body
+    html = http_get(@lido_url)
 
     html
     |> Floki.parse_document!()
@@ -46,6 +42,7 @@ defmodule Gigex.Scraper.Lido do
             location: @location_name,
             link: extract_event_link(event),
             dotw: extract_day_of_the_week(event),
+            infos: extract_event_infos(event),
             # start_event: extract_entrance_hour(event),
             # end_event: "unknown",
             datasource: "lido"
@@ -92,6 +89,28 @@ defmodule Gigex.Scraper.Lido do
       |> hd()
 
     "#{@lido_url}#{link}"
+  end
+
+  defp extract_event_infos(event) do
+    event_link = extract_event_link(event)
+
+    event_link
+    |> http_get()
+    |> Floki.parse_document!()
+    |> Floki.find(".price")
+    |> Enum.map(fn info ->
+      Floki.text(info)
+    end)
+    |> Enum.join(", ")
+    |> String.trim()
+  end
+
+  # TODO: extract to a common HTTP client together with Songkick.
+  defp http_get(url) do
+    HTTPoison.get!(url,
+      user_agent: "Gigex (Windows x64)",
+      timeout: 10_000
+    ).body
   end
 
   # It returns the first entrance hour of the list, when the doors of the place

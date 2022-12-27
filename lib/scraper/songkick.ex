@@ -33,7 +33,7 @@ defmodule Gigex.Scraper.Songkick do
             location: extract_location(event),
             dotw: extract_day_of_the_week(event),
             link: extract_event_link(event),
-            # event_details: extract_event_details(event),
+            infos: extract_event_infos(event),
             datasource: "songkick"
           }
 
@@ -94,20 +94,20 @@ defmodule Gigex.Scraper.Songkick do
     "#{@songkick}#{link}"
   end
 
-  # defp extract_event_details(event) do
-  #   event_detail_url =
-  #     event
-  #     |> Floki.find(".event-link")
-  #     |> Floki.attribute("href")
-  #     |> hd()
+  defp extract_event_infos(event) do
+    event_link = extract_event_link(event)
 
-  #   # NOTE: Find out how to not hit too hard the website ;)
-  #   "#{@songkick}/#{event_detail_url}"
-  #   |> http_get()
-  #   |> Floki.parse_document!()
-  #   |> Floki.find(".additional-details-container")
-  #   |> Floki.text()
-  # end
+    # NOTE: Find out how to not hit too hard the website ;)
+    # Cache?
+    # For the moment `http_get/1` has a :timer.sleep of 200ms
+    event_link
+    |> http_get()
+    |> Floki.parse_document!()
+    |> Floki.find(".additional-details-container")
+    |> Floki.text()
+    # Trim surrounding blank space, `\n`, `\t`, etc.
+    |> String.trim()
+  end
 
   def http_get(url) do
     :timer.sleep(200)
