@@ -16,6 +16,7 @@ iex> Gigex.get() |> Enum.take(5)
      name: "Led Zeppelin",
      date: "2022-12-10",
      dotw: "Thursday",
+     link: "https://www.lido-berlin.de/events/2022-12-10-led-zeppelin---so36",
      location: "SO36",
      datasource: "lido"
    },
@@ -23,6 +24,7 @@ iex> Gigex.get() |> Enum.take(5)
      name: "The Cure",
      date: "2022-12-09",
      dotw: "Friday",
+     link: "https://www.lido-berlin.de/events/2022-12-09-the-cure---metropol",
      location: "Metropol",
      datasource: "songkick"
    },
@@ -30,6 +32,7 @@ iex> Gigex.get() |> Enum.take(5)
      name: "The all seeing I",
      date: "2022-12-12",
      dotw: "Sunday",
+     link: "https://www.lido-berlin.de/events/2022-12-12-the-all-seeing-i---earthsea",
      location: "Earthsea",
      datasource: "lido"
    },
@@ -37,13 +40,15 @@ iex> Gigex.get() |> Enum.take(5)
      name: "Kokoroko",
      date: "2022-12-14",
      dotw: "Wednesday",
+     link: "https://www.lido-berlin.de/events/2022-12-14-kokokoko---tangeri",
      location: "Tangeri",
      datasource: "songkick"
    },
    %{
      name: "Dave Brubeck",
-     date: "2022-12-15,
+     date: "2022-12-15",
      dotw: "Saturday",
+     link: "https://www.lido-berlin.de/events/2022-12-15-dave-brubeck---blue-note",
      location: "Blue Note"
      datasource: "songkick"
    }
