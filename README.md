@@ -4,8 +4,20 @@
 
 A scraper for gigs.
 
-Currently supporting getting jazz concerts from Songkick in Berlin.
+Currently supporting getting concerts from Songkick (http://www.songkick.com)
+and Lido in (https://www.lido-berlin.de) Berlin.
 
+# Installation
+
+The package can be installed by adding gigex to your list of dependencies in mix.exs:
+
+```elixir
+def deps do
+  [
+    {:gigex, "~> 0.1"}
+  ]
+end
+```
 
 # Usage
 

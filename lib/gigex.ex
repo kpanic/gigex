@@ -6,7 +6,7 @@ defmodule Gigex do
   """
 
   @doc """
-  Get the latest gigs from Songkick in Berlin
+  Get the latest gigs from Songkick and Lido in Berlin
 
   ## Example
 

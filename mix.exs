@@ -5,6 +5,8 @@ defmodule Gigex.MixProject do
     [
       app: :gigex,
       version: "0.1.0",
+      description: description(),
+      package: package(),
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps()
@@ -23,7 +25,35 @@ defmodule Gigex.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.8"},
-      {:floki, "~> 0.34.0"}
+      {:floki, "~> 0.34.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+    ]
+  end
+
+  defp description() do
+    """
+    Gigex 🎸
+
+    A scraper for gigs.
+    """
+  end
+
+  defp package() do
+    [
+      files: [
+        "lib",
+        "LICENSE",
+        "mix.exs",
+        "mix.lock",
+        "README.md"
+      ],
+      maintainers: ["Marco Milanesi"],
+      licenses: ["GPL-3.0"],
+      links: %{
+        "GitHub" => "https://github.com/kpanic/gigex",
+        "Contributors" => "https://github.com/kpanic/gigex/graphs/contributors",
+        "Issues" => "https://github.com/kpanic/gigex/issues"
+      }
     ]
   end
 end
