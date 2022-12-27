@@ -32,6 +32,7 @@ defmodule Gigex.Scraper.Songkick do
             date: extract_date_from_event(event),
             location: extract_location(event),
             dotw: extract_day_of_the_week(event),
+            link: extract_event_link(event),
             # event_details: extract_event_details(event),
             datasource: "songkick"
           }
@@ -81,6 +82,16 @@ defmodule Gigex.Scraper.Songkick do
     human_date
     |> String.split()
     |> hd()
+  end
+
+  defp extract_event_link(event) do
+    link =
+      event
+      |> Floki.find(".event-link")
+      |> Floki.attribute("href")
+      |> hd()
+
+    "#{@songkick}#{link}"
   end
 
   # defp extract_event_details(event) do

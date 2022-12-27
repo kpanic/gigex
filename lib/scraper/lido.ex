@@ -37,13 +37,14 @@ defmodule Gigex.Scraper.Lido do
       {[], 0},
       fn
         _event, {entries, ^limit} ->
-          {:halt, entries}
+          {:halt, Enum.reverse(entries)}
 
         event, {entries, acc} ->
           entry = %{
             name: extract_name(event),
             date: extract_date(event),
             location: @location_name,
+            link: extract_event_link(event),
             dotw: extract_day_of_the_week(event),
             # start_event: extract_entrance_hour(event),
             # end_event: "unknown",
@@ -80,6 +81,17 @@ defmodule Gigex.Scraper.Lido do
     |> then(fn short_day ->
       Map.get(@short_days_to_human_days, short_day, short_day)
     end)
+  end
+
+  defp extract_event_link(event) do
+    link =
+      event
+      |> Floki.find(".event-ticket__content__title")
+      |> Floki.find("a")
+      |> Floki.attribute("href")
+      |> hd()
+
+    "#{@lido_url}#{link}"
   end
 
   # It returns the first entrance hour of the list, when the doors of the place
