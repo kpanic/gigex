@@ -1,8 +1,7 @@
-# Gigex 🎸
+# Gigex 🎸 (A scraper for gigs)
 
 ![A pleasant drawing of a sunburst bass guitar with violet, green and blue gradients](bass-guitar-drawing-640x480.png)
 
-A scraper for gigs.
 
 Currently supporting getting concerts from Songkick (http://www.songkick.com)
 and Lido in (https://www.lido-berlin.de) Berlin.
