@@ -21,12 +21,13 @@ defmodule Gigex.Scraper.Lido do
   }
   @default_entries_limit 10
 
+  alias Gigex.Scraper.HTTP
+
   def get(opts \\ []) do
     limit = Keyword.get(opts, :limit, @default_entries_limit)
 
-    html = http_get(@lido_url)
-
-    html
+    @lido_url
+    |> HTTP.get()
     |> Floki.parse_document!()
     |> Floki.find(".event-ticket")
     |> Enum.reduce_while(
@@ -95,7 +96,7 @@ defmodule Gigex.Scraper.Lido do
     event_link = extract_event_link(event)
 
     event_link
-    |> http_get()
+    |> HTTP.get()
     |> Floki.parse_document!()
     |> Floki.find(".price")
     |> Enum.map(fn info ->
@@ -103,14 +104,6 @@ defmodule Gigex.Scraper.Lido do
     end)
     |> Enum.join(", ")
     |> String.trim()
-  end
-
-  # TODO: extract to a common HTTP client together with Songkick.
-  defp http_get(url) do
-    HTTPoison.get!(url,
-      user_agent: "Gigex (Windows x64)",
-      timeout: 10_000
-    ).body
   end
 
   # It returns the first entrance hour of the list, when the doors of the place
