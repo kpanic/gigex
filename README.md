@@ -39,7 +39,7 @@ iex> Gigex.get() |> Enum.take(5)
      dotw: "Friday",
      link: "https://www.lido-berlin.de/events/2022-12-09-the-cure---metropol",
      location: "Metropol",
-     infos: "15.00 € Abendkasse, 9.00 € Vorverkauf+ Geb , 7.00 € Early Bird+ Geb, Doors open: 20:00"
+     infos: "15.00 € Abendkasse, 9.00 € Vorverkauf+ Geb , 7.00 € Early Bird+ Geb, Doors open: 20:00",
      datasource: "songkick"
    },
    %{
@@ -65,7 +65,7 @@ iex> Gigex.get() |> Enum.take(5)
      date: "2022-12-15",
      dotw: "Saturday",
      link: "https://www.lido-berlin.de/events/2022-12-15-dave-brubeck---blue-note",
-     location: "Blue Note"
+     location: "Blue Note",
      infos: "Price: €25.00 – €32.50\n      Doors open: 20:00",
      datasource: "songkick"
    }
