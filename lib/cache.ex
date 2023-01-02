@@ -9,8 +9,6 @@ defmodule Gigex.Cache do
 
   use GenServer
 
-  @timer_interval :timer.hours(2)
-
   @spec start_link(arg :: any()) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(_arg) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -32,24 +30,13 @@ defmodule Gigex.Cache do
     content
   end
 
+  def purge() do
+    :ets.delete_all_objects(@table_name)
+  end
+
   def init(_args) do
     @table_name = :ets.new(@table_name, [:named_table, :public])
 
-    {:ok, %{ref: start_timer()}}
-  end
-
-  def handle_info(:cleanup, %{ref: ref}) do
-    :ets.delete_all_objects(@table_name)
-    new_ref = refresh_timer(ref)
-    {:noreply, %{ref: new_ref}}
-  end
-
-  defp start_timer() do
-    Process.send_after(self(), :cleanup, @timer_interval)
-  end
-
-  defp refresh_timer(ref) do
-    Process.cancel_timer(ref)
-    start_timer()
+    {:ok, []}
   end
 end
