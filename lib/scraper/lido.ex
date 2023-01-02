@@ -33,7 +33,7 @@ defmodule Gigex.Scraper.Lido do
         |> then(&Cache.put(@lido_url, &1))
 
       content ->
-        content
+        Enum.take(content, Keyword.get(opts, :limit, @default_entries_limit))
     end
   end
 
