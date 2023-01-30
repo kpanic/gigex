@@ -135,3 +135,14 @@ iex> Gigex.get() |> Enum.take(5)
    }
 ]
 ```
+
+# Escript generation
+
+To generate an `escript` to be able to execute `gigex` from the command line, type:
+
+```elixir
+mix escript.build
+```
+
+A script will be generated in the application folder called `gigex`.
+You can execute it and see the gigs output.

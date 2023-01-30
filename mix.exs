@@ -9,7 +9,8 @@ defmodule Gigex.MixProject do
       package: package(),
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      escript: escript()
     ]
   end
 
@@ -21,11 +22,16 @@ defmodule Gigex.MixProject do
     ]
   end
 
+  defp escript do
+    [main_module: Gigex.CLI]
+  end
+
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:httpoison, "~> 1.8"},
       {:floki, "~> 0.34.0"},
+      {:jason, "~> 1.4"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
