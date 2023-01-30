@@ -9,7 +9,8 @@ defmodule Gigex.MixProject do
       package: package(),
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      releases: releases()
     ]
   end
 
@@ -17,7 +18,7 @@ defmodule Gigex.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Gigex.Application, []}
+      mod: {Gigex.Application, [}
     ]
   end
 
@@ -26,7 +27,23 @@ defmodule Gigex.MixProject do
     [
       {:httpoison, "~> 1.8"},
       {:floki, "~> 0.34.0"},
+      {:burrito, github: "burrito-elixir/burrito"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+    ]
+  end
+
+  def releases do
+    [
+      gigex: [
+        steps: [:assemble, &Burrito.wrap/1],
+        burrito: [
+          targets: [
+            macos: [os: :darwin, cpu: :x86_64],
+            linux: [os: :linux, cpu: :x86_64],
+            windows: [os: :windows, cpu: :x86_64]
+          ]
+        ]
+      ]
     ]
   end
 
