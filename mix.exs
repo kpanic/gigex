@@ -19,7 +19,7 @@ defmodule Gigex.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Gigex.Application, [}
+      mod: {Gigex.Application, []}
     ]
   end
 
@@ -40,7 +40,7 @@ defmodule Gigex.MixProject do
 
   def releases do
     [
-      gigex: [
+      gigex_cli: [
         steps: [:assemble, &Burrito.wrap/1],
         burrito: [
           targets: [
