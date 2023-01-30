@@ -62,6 +62,9 @@ defmodule Gigex do
   @spec gigs(opts :: list()) :: concerts :: list()
   def gigs(opts \\ []) do
     {site, _} = Keyword.pop(opts, :site, :all)
-    Gigex.Scraper.run_for(site, opts)
+
+    site
+    |> Gigex.Scraper.run_for(opts)
+    |> Gigex.Renderer.render(opts)
   end
 end

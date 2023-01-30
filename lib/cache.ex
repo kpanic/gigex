@@ -14,7 +14,7 @@ defmodule Gigex.Cache do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  @spec get(key :: String.t()) :: content :: String.t()
+  @spec get(key :: String.t()) :: content :: String.t() | nil
   def get(key) do
     case :ets.lookup(@table_name, key) do
       [{_key, content}] ->
