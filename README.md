@@ -163,5 +163,7 @@ GIGEX_MODE=CLI burrito_out/gigex_cli_linux
 
 To get the gigs.
 
-**IMPORTANT NOTE**
-Be sure to set the environment variable `GIGEX_MODE=CLI` if you want to see the gigs output
+**IMPORTANT NOTES**
+
+* Be sure to set the environment variable `GIGEX_MODE=CLI` if you want to see the gigs output
+* You have to have `zig` installed in your system to generate the self-contained binary.
