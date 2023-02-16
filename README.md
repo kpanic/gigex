@@ -135,3 +135,35 @@ iex> Gigex.get() |> Enum.take(5)
    }
 ]
 ```
+
+# Escript generation (requires erlang and elixir installed)
+
+To generate an `escript` to be able to execute `gigex` from the command line, type:
+
+```elixir
+mix escript.build
+```
+
+A script will be generated in the application folder called `gigex`.
+You can execute it and see the gigs output.
+
+# Self-contained binary generation (does not require erlang and elixir installed)
+
+Run:
+
+```elixir
+BURRITO_TARGET=linux MIX_ENV=prod mix release
+```
+
+Execute:
+
+```elixir
+GIGEX_MODE=CLI burrito_out/gigex_cli_linux
+```
+
+To get the gigs.
+
+**IMPORTANT NOTES**
+
+* Be sure to set the environment variable `GIGEX_MODE=CLI` if you want to see the gigs output
+* You have to have `zig` installed in your system to generate the self-contained binary.
