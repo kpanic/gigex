@@ -4,7 +4,7 @@ defmodule Gigex.MixProject do
   def project do
     [
       app: :gigex,
-      version: "0.1.1",
+      version: "0.1.2",
       description: description(),
       package: package(),
       elixir: "~> 1.14",
@@ -32,7 +32,7 @@ defmodule Gigex.MixProject do
     [
       {:httpoison, "~> 1.8"},
       {:floki, "~> 0.36.0"},
-      {:burrito, github: "burrito-elixir/burrito"},
+      {:burrito, "~> 1.1"},
       {:jason, "~> 1.4"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
