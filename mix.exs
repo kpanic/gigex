@@ -31,7 +31,7 @@ defmodule Gigex.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.8"},
-      {:floki, "~> 0.34.0"},
+      {:floki, "~> 0.36.0"},
       {:burrito, github: "burrito-elixir/burrito"},
       {:jason, "~> 1.4"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
