@@ -11,13 +11,28 @@ defmodule Gigex.Scraper.Lido do
   @location_name "Lido"
 
   @short_days_to_human_days %{
-    "Mo" => "Monday",
-    "Tu" => "Tuesday",
-    "We" => "Wednesday",
-    "Th" => "Thursday",
-    "Fr" => "Friday",
-    "Sa" => "Saturday",
-    "Su" => "Sunday"
+    "mo" => "Monday",
+    "mon" => "Monday",
+    "di" => "Tuesday",
+    "tu" => "Tuesday",
+    "tue" => "Tuesday",
+    "dienstag" => "Tuesday",
+    "mi" => "Wednesday",
+    "we" => "Wednesday",
+    "wed" => "Wednesday",
+    "mittwoch" => "Wednesday",
+    "do" => "Thursday",
+    "thu" => "Thursday",
+    "donnerstag" => "Thursday",
+    "fr" => "Friday",
+    "fri" => "Friday",
+    "freitag" => "Friday",
+    "sa" => "Saturday",
+    "sat" => "Saturday",
+    "samstag" => "Saturday",
+    "so" => "Sunday",
+    "sun" => "Sunday",
+    "sonntag" => "Sunday"
   }
   @default_entries_limit 10
 
@@ -75,8 +90,11 @@ defmodule Gigex.Scraper.Lido do
     event
     |> Floki.find(".event-ticket__meta__day")
     |> Floki.text()
+    |> String.replace(".", "")
+    |> String.trim()
+    |> String.downcase()
     |> then(fn short_day ->
-      Map.get(@short_days_to_human_days, short_day, short_day)
+      Map.get(@short_days_to_human_days, short_day, String.capitalize(short_day))
     end)
   end
 

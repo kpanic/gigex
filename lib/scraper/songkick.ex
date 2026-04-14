@@ -27,22 +27,26 @@ defmodule Gigex.Scraper.Songkick do
           {:halt, Enum.reverse(entries)}
 
         event, {entries, acc} ->
+          raw_date = extract_date_from_event(event)
+          raw_day = extract_day_of_the_week(event)
+
+          date = normalize_date(raw_date)
+          dotw = compute_dotw(date, raw_day)
+
           entry = %{
             name: extract_name(event),
-            date: extract_date_from_event(event),
-            location: extract_location(event),
-            dotw: extract_day_of_the_week(event),
+            date: date,
             link: extract_event_link(event),
+            location: extract_location(event),
             infos: extract_event_infos(event),
-            datasource: "songkick"
+            datasource: "songkick",
+            dotw: dotw
           }
 
           {:cont, {[entry | entries], acc + 1}}
       end
     )
   end
-
-  # normalize()?
 
   defp extract_date_from_event(event) do
     datetime =
@@ -51,15 +55,74 @@ defmodule Gigex.Scraper.Songkick do
       |> Floki.attribute("datetime")
       |> Floki.text()
 
-    case DateTime.from_iso8601(datetime) do
-      {:ok, datetime, _} ->
-        datetime
-        |> DateTime.to_date()
-        |> to_string()
+    datetime
+  end
+
+  defp normalize_date(date) when is_binary(date) do
+    case Date.from_iso8601(date) do
+      {:ok, d} ->
+        to_string(d)
 
       _ ->
-        datetime
+        case DateTime.from_iso8601(date) do
+          {:ok, dt, _} -> dt |> DateTime.to_date() |> to_string()
+          _ -> nil
+        end
     end
+  end
+
+  defp normalize_date(_), do: nil
+
+  defp compute_dotw(date_iso, raw_day) do
+    cond do
+      is_binary(date_iso) and date_iso != "" ->
+        case Date.from_iso8601(date_iso) do
+          {:ok, d} ->
+            ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            |> Enum.at(Date.day_of_week(d) - 1)
+
+          _ ->
+            nil
+        end
+
+      true ->
+        raw_day
+        |> to_string()
+        |> String.replace(".", "")
+        |> String.trim()
+        |> String.downcase()
+        |> songkick_day_map()
+    end
+  end
+
+  defp songkick_day_map(day) do
+    map = %{
+      "mo" => "Monday",
+      "mon" => "Monday",
+      "monday" => "Monday",
+      "di" => "Tuesday",
+      "tu" => "Tuesday",
+      "tue" => "Tuesday",
+      "tuesday" => "Tuesday",
+      "mi" => "Wednesday",
+      "wed" => "Wednesday",
+      "wednesday" => "Wednesday",
+      "do" => "Thursday",
+      "th" => "Thursday",
+      "thu" => "Thursday",
+      "thursday" => "Thursday",
+      "fr" => "Friday",
+      "fri" => "Friday",
+      "friday" => "Friday",
+      "sa" => "Saturday",
+      "sat" => "Saturday",
+      "saturday" => "Saturday",
+      "so" => "Sunday",
+      "sun" => "Sunday",
+      "sunday" => "Sunday"
+    }
+
+    Map.get(map, day, String.capitalize(day))
   end
 
   defp extract_location(event) do
